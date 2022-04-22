@@ -100,7 +100,13 @@ x = np.array(list(vocab.fit_transform(documents)))
 
 # Word2Vec模型
 
-Word2Vec是Google在2013年开源的一款将词表征为实数值向量的高效工具，采用的模型有CBOW(Continuous Bag-Of-Words，即连续的词袋模型)和Skip-Gram 两种。Word2Vec通过训练，可以把对文本内容的处理简化为K维向量空间中的向量运算，而向量空间上的相似度可以用来表示文本语义上的相似度。因此，Word2Vec 输出的词向量可以被用来做很多NLP相关的工作，比如聚类、找同义词、词性分析等等。
+Word2Vec是Google在2013年开源的一款将词表征为实数值向量的高效工具。
+
+Word2Vec实际是一种浅层的神经网络模型。
+
+采用的模型有CBOW(Continuous Bag-Of-Words，即连续的词袋模型)和Skip-Gram 两种。
+
+Word2Vec通过训练，可以把对文本内容的处理简化为K维向量空间中的向量运算，而向量空间上的相似度可以用来表示文本语义上的相似度。因此，Word2Vec 输出的词向量可以被用来做很多NLP相关的工作，比如聚类、找同义词、词性分析等等。
 
 ![image-20220409215404072](/Users/chenguanjin/Library/Application Support/typora-user-images/image-20220409215404072.png)
 
@@ -153,3 +159,47 @@ def getVecsByWord2Vec(model, corpus, size):
     return x
 ```
 
+存在的问题：
+
+对多义词无法很好的表现
+
+# FastText
+
+英语单词通常有其内部结构和形成⽅式。
+
+比如可以从，“dog”、“dogs”和“dogcatcher”的字⾯上推测它们的关系。
+
+但是在Word2vec中，并没有表现出来这种关系。我们都将不同的单词⽤不同的向量来表⽰。
+
+例如：**“dog”和“dogs”分别⽤两个不同的向量表⽰，而模型中并未直接表达这两个向量之间的关系**
+
+fastText提出了**⼦词嵌⼊**的⽅法，从而试图将构词信息引⼊word2vec中的CBOW。
+
+使用fastText进行文本分类的同时也会产生词的embedding，即embedding是fastText分类的产物。除非你决定使用预训练的embedding来训练fastText分类模型，这另当别论。
+
+## n-gram表示单词
+
+fastText使用了字符级别的n-grams来表示一个单词。
+
+对于单词“book”，假设n的取值为3，则它的trigram有:
+
+**“<bo”, “boo”, “ook”, “ok>”  其中，<表示前缀，>表示后缀。**
+
+**这带来两点好处**：
+
+1. 对于低频词生成的词向量效果会更好。因为它们的n-gram可以和其它词共享。
+2. 对于训练词库之外的单词，仍然可以构建它们的词向量。我们可以叠加它们的字符级n-gram向量。
+
+## ![image-20220418163522628](/Users/chenguanjin/Library/Application Support/typora-user-images/image-20220418163522628.png)
+
+与CBOW相似，不同的是：
+
+- CBOW的输入是目标单词的上下文，fastText的输入是多个单词及其n-gram特征，这些特征用来表示单个文档；
+- CBOW的输入单词被one-hot编码过，fastText的输入特征是被embedding过；
+- CBOW的输出是目标词汇，fastText的输出是文档对应的类标。
+
+由于FastText输入的是Embedding词向量，所以包含了空间特征，可以判断出两个词的距离，通过**向量的距离来衡量单词间的语义相似程度**
+
+使用词embedding而非one-hot作为特征，这是fastText效果好的一个原因
+
+另一个原因就是字符级n-gram特征的引入对分类效果会有一些提升 。
