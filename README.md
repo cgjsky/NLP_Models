@@ -2,19 +2,25 @@
 
 ## Contextual?:
 
-## 		Non-Contextual:   CBOW ,  Skip-Gram , GloVe
+- ## 		Non-Contextual:   CBOW ,  Skip-Gram , GloVe
 
-## 		Contextual:   ELMo,  GPT , BERT
+
+- ## 		Contextual:   ELMo,  GPT , BERT
+
 
 ## Architectures:
 
-## 		LSTM:   LM-LSTM  , Shared LSTM  , ELMo  , CoVe 
+- ## 		LSTM:   LM-LSTM  , Shared LSTM  , ELMo  , CoVe 
 
-## 		Transformer Enc. :  BERT  , XLNet
 
-## 		Transformer Dec.  :GPT/GPT2
+- ## 		Transformer Enc. :  BERT  , XLNet
 
-## 		Transformer :MASS  BART
+
+- ## 		Transformer Dec.  :GPT/GPT2
+
+
+- ## 		Transformer :MASS  BART
+
 
 
 
