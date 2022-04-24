@@ -66,11 +66,9 @@ TF表示词条在文档d中出现的频率。IDF（inverse document frequency，
 
 ```python
 from sklearn.feature_extraction.text import TfidfTransformer
-transformer = TfidfTransformer()
-#一般使用transformer对上一步取得的toarray矩阵进行处理
-c=cv_fit.toarray()
-tfidf=transformer.fit_transform(c)
-tfidf.toarray() 
+tfidf_vec = TfidfTransformer()
+
+tfidf=yfidf.fit_transform(text).toarray()
 ```
 
 # 词汇表模型
